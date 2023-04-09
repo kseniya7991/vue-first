@@ -1,23 +1,27 @@
 <template>
     <form @submit.prevent>
         <h4>Создание поста</h4>
-        <input
+        <MyInput
             v-model="post.title"
-            class="input"
+            v-focus
             type="text"
             placeholder="Название"
         />
-        <input
-            v-model="post.body"
-            class="input"
-            type="text"
-            placeholder="Описание"
-        />
-        <button class="btn" @click="createPost">Создать</button>
+        <MyInput v-model="post.body" type="text" placeholder="Описание" />
+
+        <MyBtn class="btn" @click="createPost">Создать</MyBtn>
     </form>
 </template>
+
 <script>
 export default {
+    components: {},
+    props: {
+        dialogVisible: {
+            type: Boolean,
+            default: false,
+        },
+    },
     data() {
         return {
             post: {
@@ -29,6 +33,8 @@ export default {
 
     methods: {
         createPost() {
+            this.$emit("update:dialogVisible", false);
+
             this.post.id = Date.now;
             this.$emit("create", this.post);
             this.post = {
@@ -49,24 +55,5 @@ form {
 
 form h4 {
     font-size: 20px;
-}
-
-form .btn {
-    padding: 10px;
-    border-radius: 0;
-    background-color: skyblue;
-
-    margin-top: 15px;
-
-    margin-left: auto;
-}
-
-.input {
-    border: 1px solid skyblue;
-    border-radius: 0;
-    padding: 10px;
-    font-size: 15px;
-    margin-top: 15px;
-    width: 100%;
 }
 </style>

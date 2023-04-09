@@ -1,7 +1,18 @@
 <template>
-    <div>
-        <PostItem v-for="post in posts" :post="post" />
+    <div v-if="posts.length > 0">
+        <h2>Список постов</h2>
+        <transition-group name="post-list">
+            <PostItem
+                v-for="post in posts"
+                :post="post"
+                :key="post.id"
+                @remove="$emit('remove', post)"
+            />
+        </transition-group>
     </div>
+    <h2 v-else class="warning">
+        Список постов пуст. Добавьте что-нибудь :)
+    </h2>
 </template>
 
 <script>
@@ -19,12 +30,24 @@ export default {
 };
 </script>
 <style scoped>
-.post {
-    border: 1px solid rgb(0, 33, 104);
-    padding: 15px;
-    margin-top: 15px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+.warning {
+    color: red;
+}
+.post-list-item {
+    display: inline-block;
+    margin-right: 10px;
+}
+.post-list-enter-active,
+.post-list-leave-active {
+    transition: all 0.4s ease;
+}
+.post-list-enter-from {
+    opacity: 0;
+    transform: translateY(30px);
+}
+.post-list-leave-to {
+}
+.post-list-move {
+    transition: transform 0.5s ease;
 }
 </style>
